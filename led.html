@@ -1,0 +1,25 @@
+<html>
+<head>
+<script src="//code.jquery.com/jquery-1.8.0.min.js"></script>
+<script>
+var runShellScript = function () {
+    $.get('/var/www/html/tabview/ledBlink.php', function () {
+        alert('Shell script done!');
+    });
+};
+// Some stuff
+runShellScript();
+// A $( document ).ready() block.
+$( document ).ready(function() {
+    console.log( "ready!" );
+$.get('ledBlink.php', function (data) {
+        alert('Shell script done!');
+	console.log(data);
+    });
+});
+</script>
+</head>
+<body>
+hello
+</body>
+</html>

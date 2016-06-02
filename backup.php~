@@ -1,0 +1,110 @@
+
+
+
+<?php
+
+$servername = "localhost";
+$username = "root";
+$password = "satunol10";
+$dbname = "testdb";
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check connection
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT Number, Digital_Input_Name, Input_Condition, Alarm_Condition FROM Digital_Input";
+$result  = $conn->query($sql);
+$Element = 0; //Array elements start at ZERO. So this is to intialise it.
+
+if (mysqli_num_rows($result) > 0) {
+    // output data of each row
+    while($row = mysqli_fetch_assoc($result )) 
+    {
+	$Number[$Element] = $row["Number"];
+	$Digital_Input_Name[$Element] = $row["Digital_Input_Name"];
+	$Input_Condition[$Element] = $row["Input_Condition"];
+	$Alarm_Condition[$Element] = $row["Alarm_Condition"];
+	$Element++;
+    }
+}
+$Max_Element = $Element;
+?>
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+<?php
+$Element = 0;
+while ( $Element < $Max_Element )
+{
+	$Alarm[$Element] = "Alarm_" . $Element;
+	echo "<table border='1'>
+		<tr>
+		<td>" . $Digital_Input_Name[$Element] . "</td>
+		<td>
+			<select name='" . $Digital_Input_Name[$Element] . "'>
+			<option selected='selected'>"
+			. $Input_Condition[$Element] . 
+			"</option> 
+			<option value='Enable'>Enable</option>
+			<option value='Disable'>Disable</option>
+			</select>		
+		</td>
+		<td> Alarm if </td>
+		<td>
+			<select name='" . $Alarm[$Element] . "'>
+			<option selected='selected'>
+			" . $Alarm_Condition[$Element]. 
+			"</option> 
+			<option value='Open'>Open</option>
+			<option value='Close'>Close</option>
+		</td>
+		</tr>";
+	$Element++;
+}
+?>
+
+</table>
+<input type="submit" name="submit" value="Save">
+</form>
+<?php
+
+echo $Digital_Input_Name[1] . "<br> php baru <br>";
+echo "Element " . $Element . "<br>";
+echo "Max Element " . $Max_Element . "<br>";
+$Element = 0;
+while ( $Element < $Max_Element )
+{
+	$Input_Condition_Temp[$Element] = $Alarm_Condition_Temp[$Element] = "";
+	$Element++;
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+	$Element = 0;
+	while ($Element < $Max_Element)
+	{
+	$Input_Condition_Temp[$Element] = $_POST[$Digital_Input_Name[$Element]];
+	$Alarm_Condition_Temp[$Element] = $_POST[$Alarm[$Element]];
+	echo "Digital Input is " . $Input_Condition_Temp[$Element] . "<br>";
+	echo "Alarm is " . $Alarm_Condition_Temp[$Element] . "<br>";
+	$Element++;
+	} 
+}
+$Element = 0;
+
+while ($Element < $Max_Element)
+{
+	$sql = "UPDATE  Digital_Input SET Input_Condition='$Input_Condition_Temp[$Element]' WHERE Digital_Input_Name='$Digital_Input_Name[$Element]'";
+	if ($conn->query($sql) === TRUE) {
+	    echo "Record updated successfully";
+	} else {
+    	echo "Error updating record: " . $conn->error;
+	}
+	$sql = "UPDATE  Digital_Input SET Alarm_Condition='$Alarm_Condition_Temp[$Element]' WHERE Digital_Input_Name='$Digital_Input_Name[$Element]'";
+	if ($conn->query($sql) === TRUE) {
+	    echo "Record updated successfully";
+	} else {
+    	echo "Error updating record: " . $conn->error;
+	}
+	$Element++;
+}
+
+?>

@@ -1,0 +1,19 @@
+// Validating Empty Field
+function check_empty() {
+if (document.getElementById('Id_CC1120_New').value == "" || document.getElementById('Name_CC1120_New').value == "" || document.getElementById('Type_Device_New').value == "" || document.getElementById('Stat_Device_New').value == "" || document.getElementById('RSSI_CC1120_New').value == "" || document.getElementById('Time_Parameter_New').value == "" ) {
+alert("Fill All Fields !");
+return false;
+} else {
+document.getElementById('form').submit();
+alert("Form Submitted Successfully...");
+}
+}
+
+//Function To Display Popup
+function div_show() {
+document.getElementById('abc').style.display = "block";
+}
+//Function to Hide Popup
+function div_hide(){
+document.getElementById('abc').style.display = "none";
+}

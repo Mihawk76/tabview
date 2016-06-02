@@ -1,0 +1,1759 @@
+<html>
+<head>
+
+<title>Tab-View Sample</title>
+
+<link rel="stylesheet" type="text/css" href="tabview.css" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+<script type="text/javascript" src="tabview.js"></script>
+<script>
+	
+	</script>
+</head>
+<body>
+
+
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "satunol10";
+$dbname = "testdb";
+$id;
+$type;
+$description;
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+
+$sql = "SELECT Data FROM System where Type_Data = 'Device IP'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+	$Device_IP = $row["Data"];
+//echo "Data: " . $Device_IP;
+
+$sql = "SELECT Data FROM System where Type_Data = 'Gateway'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+	$Gateway = $row["Data"];
+//echo "<br>Gateway: " . $Gateway;
+
+$sql = "SELECT Data FROM System where Type_Data = 'Server IP'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+	$Server_IP = $row["Data"];
+//echo "<br>Server IP: " . $Server_IP;
+
+$sql = "SELECT Data FROM System where Type_Data = 'Storage'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+	$Storage = $row["Data"];
+//echo "<br>Server IP: " . $Storage;
+
+$sql = "SELECT Data FROM System where Type_Data = 'Customer Name'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+	$Customer_Name = $row["Data"];
+//echo "<br>Customer Name: " . $Customer_Name;
+
+$sql = "SELECT Data FROM System where Type_Data = 'Customer ID'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+	$Customer_ID = $row["Data"];
+//echo "<br>Customer ID: " . $Customer_ID;
+
+$sql = "SELECT Data FROM System where Type_Data = 'Device ID'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+	$Device_ID = $row["Data"];
+//echo "<br>Device_ID: " . $Device_ID;
+
+$sql = "SELECT Data FROM System where Type_Data = 'Username'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+	$Username = $row["Data"];
+//echo "<br>Username: " . $Username;
+
+$sql = "SELECT Data FROM System where Type_Data = 'Email'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+	$Email = $row["Data"];
+//echo "<br>Email: " . $Email;
+
+$sql = "SELECT Data FROM System where Type_Data = 'Cell Number'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+	$Cell_Number = $row["Data"];
+//echo "<br>Cell Number: " . $Cell_Number;
+
+$conn->close();
+?>
+<?php
+// define variables and set to empty values
+$Device_IP_Temp = $Gateway_Temp = $Server_IP_Temp = $Storage_Temp = $Customer_Name_Temp = $Customer_ID_Temp = $Device_ID_Temp = $Username_Temp = $Email_Temp = $Cell_Number_Temp = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+   $Device_IP_Temp = test_input($_POST["Device_IP_Temp"]);
+   $Gateway_Temp = test_input($_POST["Gateway_Temp"]);
+   $Server_IP_Temp = test_input($_POST["Server_IP_Temp"]);
+   $Storage_Temp = test_input($_POST["Storage_Temp"]);
+   $Customer_Name_Temp = test_input($_POST["Customer_Name_Temp"]);
+   $Customer_ID_Temp = test_input($_POST["Customer_ID_Temp"]);
+   $Device_ID_Temp = test_input($_POST["Device_ID_Temp"]);
+   $Username_Temp = test_input($_POST["Username_Temp"]);
+   $Email_Temp = test_input($_POST["Email_Temp"]);
+   $Cell_Number_Temp = test_input($_POST["Cell_Number_Temp"]);
+}
+
+function test_input($data) {
+   $data = trim($data);
+   $data = stripslashes($data);
+   $data = htmlspecialchars($data);
+   return $data;
+}
+?>
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+
+<div class="TabView" id="TabView">
+
+<!-- *** Tabs ************************************************************** -->
+
+<div class="Tabs" style="width: 1200px;">
+  <a>System</a>
+  <a>Comm</a>
+  <a>IO</a>
+  <a>External Devices</a>
+  <a>Alarm</a>
+  <a>CC1120_442</a>
+  <a>CC1120TH</a>
+  <a>CC1120T</a>
+  <a>CC1120kwh</a>
+</div>
+
+<!-- *** Pages ************************************************************* -->
+
+<div class="Pages" style="width: 826px; height: 500px;">
+
+  <div class="Page">
+  <div class="Pad">
+
+  <!-- *** Page1 Start *** -->
+
+
+<table>
+	<tr>
+		<td>Device IP</td>
+		<td><input type="text" name="Device_IP_Temp" value="<?php echo $Device_IP; ?>"></td>
+		<td>Enter this device IP</td>
+	</tr>
+	<tr>
+		<td>Gateway</td>
+		<td><input type="text" name="Gateway_Temp" value="<?php echo $Gateway; ?>"></td>
+		<td>Enter this Gateway IP</td>
+	</tr>
+	<tr>
+		<td>Server Ip</td>
+		<td><input type="text" name="Server_IP_Temp" value="<?php echo $Server_IP; ?>"></td>
+		<td>Enter server IP</td>
+	</tr>
+	<tr>
+		<td>Storage</td>
+		<td><input type="text" name="Storage_Temp" value="<?php echo $Storage; ?>"></td>
+		<td>Read SD card spec if available</td>
+	</tr>
+	<tr>
+		<td>Customer Name</td>
+		<td><input type="text" name="Customer_Name_Temp" maxlength="60" value="<?php echo $Customer_Name; ?>"></td>
+		<td>Number, letter and spesial letter, maximum 60 characters</td>
+	</tr>
+	<tr>
+		<td>Customer ID</td>
+		<td><input type="text" name= "Customer_ID_Temp" id="customer_id" maxlength="60" value="<?php echo $Customer_ID; ?>"></td>
+		<td>Number and letters only, maximum 60 characters</td>
+	</tr>
+	<tr>
+		<td>Device ID</td>
+		<td><input type="text" name ="Device_ID_Temp" id="Device_ID_Temp" maxlength="60" value="<?php echo $Device_ID; ?>"></td>
+		<td>Number and letters only, maximum 60 characters</td>
+	</tr>
+	<tr>
+		<td>Username</td>
+		<td><input type="text" name="Username_Temp" value="<?php echo $Username; ?>"></td>
+	</tr>
+	<tr>
+		<td>Email</td>
+		<td><input type="email" name="Email_Temp" value="<?php echo $Email; ?>"></td>
+	</tr>
+	<tr>
+		<td>Cell Number</td>
+		<td><input type="number" name="Cell_Number_Temp" onkeypress='return event.charCode >= 48 && event.charCode <= 57' value="<?php echo $Cell_Number; ?>"></input></td>
+	</tr>
+	<tr>
+		<td colspan=>
+			<center>
+				<input type="submit" name="submit" value="Save" />
+				<input type="submit" name="submit" value="Cancel"> 
+			</center>
+		</td>
+	</tr>
+</table>
+
+  <!-- *** Page1 End ***** -->
+
+  </div>
+  </div>
+
+  <!-- *** Page2 Start *** -->
+
+  <div class="Page">
+  <div class="Pad">
+  <tr>
+  <table>
+		<tr>
+			<td>WiFi</td>
+			<td>
+				<select name="option">
+				<option value="Enable">Enable</option>
+				<option value="Disable">Disable</option>
+				</select>
+			</td>
+		</tr>
+	<tr>
+		<td>Ethernet</td>
+		<td>
+			<select name="option">
+			<option value="Enable">Enable</option>
+			<option value="Disable">Disable</option>
+			</select>
+		</td>
+	</tr>
+  </table>
+  <table>
+	<tr>
+		<td>Current cellular combiation, Cellular_1 GSM, Huawei EM300; Cellular_2 Empty</td>
+	</tr>
+  </table>
+  <table>
+	<tr>
+		<td>Cellular_1<td>
+		<td>
+			<select name="option">
+			<option value="GSM">GSM</option>
+			<option value="CDMA">CDMA</option>
+			</select>
+		</td>
+		<td>&nbsp;</td>
+		<td>Brand<td>
+		<td>
+			<select name="option">
+			<option value="Huawei EM300">Huawei EM300</option>
+			<option value="ZTE G200">ZTE G200</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Cellular_2<td>
+		<td>
+			<select name="option">
+			<option value="CDMA">CDMA</option>
+			<option value="GSM">GSM</option>
+			</select>
+		</td>
+		<td>&nbsp;</td>
+		<td>Brand<td>
+		<td>
+			<select name="option">
+			<option value="ZTE G200">ZTE G200</option>
+			<option value="Huawei EM300">Huawei EM300</option>
+			</select>
+		</td>
+	</tr>
+  </table>
+  <table>
+		<tr>
+			<td>Bluetooth</td>
+			<td>
+				<select name="option">
+				<option value="Enable">Enable</option>
+				<option value="Disable">Disable</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Wireless CC1120</td>
+			<td>
+				<select name="option">
+				<option value="Enable">Enable</option>
+				<option value="Disable">Disable</option>
+				</select>
+			</td>
+		</tr>
+  </table>
+  <table>
+		<tr>
+			<td colspan>
+				<center>
+					<input type="submit" name="submit" value="Save"></td>
+					<td><input type="submit" name="submit" value="Cancel">
+				</center>
+			</td>
+		</tr>
+</table>
+  
+  <!-- *** Page2 End ***** -->
+
+  </div>
+  </div>
+
+  <div class="Page">
+  <div class="Pad">
+
+  <!-- *** Page3 Start *** -->
+
+ 
+  <table>
+	<tr>
+		<td>Digital input_0<td>
+		<td>
+			<select name="option">
+			<option value="Enable">Enable</option>
+			<option value="Disable">Disable</option>
+			</select>
+		</td>
+		<td>Alarm if<td>
+		<td>
+			<select name="option">
+				<option value="Open">Open</option>
+				<option value="Close">Close</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>Digital input_1<td>
+		<td>
+			<select name="option">
+				<option value="Enable">Enable</option>
+				<option value="Disable">Disable</option>
+			</select>
+		</td>
+		<td>Alarm if<td>
+		<td>
+			<select name="option">
+				<option value="Open">Open</option>
+				<option value="Close">Close</option>
+			</select>
+		</td>
+	</tr>
+	</table>
+	<table>
+		<tr>
+			<td colspan><center><input type="submit" value="Save" /></td>
+			<td><input type="submit" value="Cancel" /></center></td>
+		</tr>
+	</table>
+  </table>
+
+  <!-- *** Page3 End ***** -->
+
+  </div>
+  </div>
+	<div class="Page">
+	<div class="Pad">
+	
+	<!-- *** Page4 Start *** -->
+	  <table>
+		<tr>
+			<td>Device connected at Comm_1</td>
+			<td>
+				<select name="option">
+					<option value="Genset">Genset</option>
+					<option value="Comap1234">Comap1234</option>
+					<option value="RS485">RS485</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Device connected at Comm_2</td>
+			<td>
+				<select name="option">
+					<option value="Rectifier">Rectifier</option>
+					<option value="Powerone 1234">Powerone 1234</option>
+					<option value="RS485">RS485</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan>
+				<center>
+					<input type="submit" value="Save" />
+					<input type="submit" value="Cancel" />
+				</center>
+			</td>
+		</tr>
+	</table>
+  <!-- *** Page4 End ***** -->
+
+  </div>
+  </div>
+  
+  <!-- *** Page 5 Start ***** -->
+  
+	<div class="Page">
+	<div class="Pad">
+	
+	<table>
+		<tr>
+			<td>Alarm Notification</td>
+			<td>
+				<select name="option">
+					<option value="Disable">Disable</option>
+					<option value="Critical Only">Critical only</option>
+					<option value="Critical & Major Only">Critical & Major only</option>
+					<option value="All Alarm">All alarm</option>
+				</select>
+			</td>
+			<td>Disable, Critical Only, Critical & Major Only, All Alarms</td>
+		</tr>
+		<tr>
+			<td>Send alarm until</td>
+			<td>
+				<select name="option">
+					<option value="Send once">Send once</option>
+					<option value="Send until acknwoledge">Send until acknwoledge</option>
+				</select>
+			</td>
+			<td>Send once, send until acknowledge</td>
+		</tr>
+		<tr>
+			<td>Send alarm to</td>
+			<td>
+				<select name="option">
+					<option value="Email">Email</option>
+					<option value="SMS">SMS</option>
+					<option value="Voice call">Voice call</option>
+					<option value="None">None</option>
+					<option value="SMS">SMS</option>
+					<option value="Email & SMS">Email & SMS</option>
+				</select>
+			</td>
+			<td>Email, SMS, Voice Call, None, Email and SMS. Send to server is standard
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>Alarm Message</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>
+				<style>textarea.foo{resize:none;}</style>
+				<textarea class="foo" name="alarm_message" cols="50" rows="2">[Alarm Severity] Alarm  [Alarm Description][var value],from [Device Label] at [Time/Date]</textarea>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td colspan="3">
+				<center>
+					<input type="submit" value="Save" />
+					<input type="submit" value="Cancel" />
+				</center>
+			</td>
+		</tr>
+	</table>	
+	
+	</div>
+	</div>
+	
+	<!-- *** Page 5 End ***** -->
+	
+	<div class="Page">
+	<div class="Pad">
+	
+	<!-- *** Page 6 Start ***** -->
+	
+	<table>
+		<tr>
+			<td>List CC1120</td>
+			<td>
+				<select name="list_cc1120">
+					<option value="1234, CC1120_room1, IO, Normal">1234, CC1120_room1, IO, Normal</option>
+					<option value="1235, CC1120_room2, IO, Normal">1235, CC1120_room2, IO, Normal</option>
+					<option value="1233, CC1120_room3, Sensor, Normal">1233, CC1120_room3, Sensor, Normal</option>
+					<option value="1231, CC1120_room4, IO, Normal">1231, CC1120_room4, IO, Normal</option>
+					<option value="1234, CC1120_room5, KWH, Normal">1234, CC1120_room5, KWH, Normal</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>
+				CC1120 ID
+			</td>
+			<td>
+				<input size="4" name="cc1120_id" value="1236"/input>
+			</td>
+			<td>&nbsp;</td>
+			<td>CC1120 Label</td>
+			<td>
+				<input size="15" name="CC1120_Label" value="CC1120_basement">
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Device Type
+			</td>
+			<td>
+				<input size="15" name="Device Type" value="CC1120_IO_442">
+			</td>
+			<td>
+				&nbsp;
+			</td>
+			<td>
+				Device Status
+			</td>
+			<td>
+				<select name="option">
+					<option value="Normal">Normal</option>
+					<option value="Disconnected">Disconnected</option>
+					<option value="New">New</option>
+				</select>
+			</td>
+			<td>Normal, Disconnected, New
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>Remote CC1120 RSSI</td>
+			<td><input size="1" name="Remote CC1120 RSSI" value="-80"></td>
+			<td>dbm</td>
+			<td>&nbsp;</td>
+			<td>Send parameter every</td>
+			<td><input size="2" name="Send parameter every" value="xxx"></td>
+			<td>second</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>Digital Input_0</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td><input size="3" name="Digital Input_0" value="Close"></td>
+			<td>Alarm if</td>
+			<td>
+				<select name="option">
+					<option value="Open">Open</option>
+					<option value="Close">Close</option>
+				</select>
+			</td>
+			<td>Then</td>
+			<td>
+				<select name="option">
+					<option value="On">On</option>
+					<option value="Off">Off</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Digital Input_1</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td><input size="3" name="Digital Input_1" value="Close"></td>
+			<td>Alarm if</td>
+			<td>
+				<select name="option">
+					<option value="Open">Open</option>
+					<option value="Close">Close</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Digital Input_2</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td><input size="3" name="Digital Input_2" value="Close"></td>
+			<td>Alarm if</td>
+			<td>
+				<select name="option">
+					<option value="Open">Open</option>
+					<option value="Close">Close</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Digital Input_3</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td><input size="3" name="Digital Input_3" value="Close"></td>
+			<td>Alarm if</td>
+			<td>
+				<select name="option">
+					<option value="Open">Open</option>
+					<option value="Close">Close</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Digital Ouput_0</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>	
+			<td><input size="3" name="Digital Ounput_0" value="Close"></td>
+		</tr>
+		<tr>
+			<td>Digital Ouput_1</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			<td><input size="3" name="Digital Ounput_1" value="Close"></td>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>Analog Input_0</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td><input size="1" name="Analog Input_0" value="80"></td>
+			<td>Alarm If</td>
+			<td>
+				<select name="option">
+					<option value="More than">More than</option>
+					<option value="Less than">Less than</option>
+				</select>
+			</td>
+			<td>
+				<input size="1" name="Analog Input_0" value="35">
+			</td>
+			<td>&nbsp;</td>
+			<td>Alarm Description</td>
+			<td><input size="20" name="Alarm_Description"value="High temperature"></td>
+		</tr>
+		<tr>
+			<td>Analog Input_1</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td>
+				<input size="1" name="Analog Input_1" value="80">
+			</td>
+			<td>Alarm If</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Betwen</option>
+					<option value="Disable">Out Off</option>
+				</select>
+			</td>
+			<td><input size="1" name="Analog Input_1" value="70"></td>
+			<td><input size="1" name="Analog Input_1" value="80"></td>
+			<td>Alarm Description</td>
+			<td>
+				<input size="20" name="Alarm Description"value="Humidity out of tolarance">
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td colspan=>
+				<center>
+					<input type="submit" name="submit" value="Save">
+					<input type="submit" name="submit" value="Cancel">
+					<input type="submit" name="submit" value="Add New">
+					<input type="submit" name="submit" value="Delete Node">
+					<input type="submit" name="submit" value="Query">
+				</center>
+			</td>
+		</tr>
+	</table>
+	
+	<!-- *** Page 6 End ***** -->
+	
+	</div>
+	</div>
+	
+	<!-- *** Page 7 Start ***** -->
+	
+	<div class="Page">
+	<div class="Pad">
+	
+	<table>
+		<tr>
+			<td>List CC1120</td>
+			<td>
+				<select name="List CC1120">
+					<option value="1234, CC1120_room1, IO, Normal">1234, CC1120_room1, IO, Normal</option>
+					<option value="1235, CC1120_room2, IO, Normal">1235, CC1120_room2, IO, Normal</option>
+					<option value="1233, CC1120_room3, Sensor, Normal">1233, CC1120_room3, Sensor, Normal</option>
+					<option value="1231, CC1120_room4, IO, Normal">1231, CC1120_room4, IO, Normal</option>
+					<option value="1234, CC1120_room5, KWH, Normal">1234, CC1120_room5, KWH, Normal</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>CC1120 ID</td>
+			<td>
+				<input size="2" name="CC1120_ID"value="1236">
+			</td>
+			<td>CC1120 Label</td>
+			<td>
+				<input size="15" name="CC1120_Label" value="CC1120_basement">
+			</td>
+		</tr>
+		<tr>
+			<td>Device Type</td>
+			<td>
+				<input size="15" name="Device Type" value="CC1120_IO_442">
+			</td>
+			<td>Device Status</td>
+			<td>
+			<select name="option">
+			<option value="Disable">Normal</option>
+			<option value="Disable">Disconnected</option>
+			<option value="Disable">New</option></select></td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>Remote CC1120 RSSI</td>
+			<td>
+				<input size="1" name="Remote_CC1120_RSSI" value="-80">
+			</td>
+			<td>dbm</td>
+			<td>
+				Send parameter every
+			</td>
+			<td>
+				<input size="1" name="Send parameter every" value="xxx">
+			</td>
+			<td>
+				second
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>Digital Input_1</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td>
+				<input size="2" name="Digital_input_1" value="Close">
+			</td>
+			<td>Alarm if</td>
+			<td>
+				<select name="option">
+					<option value="Open">Open</option>
+					<option value="Close">Close</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Digital Input_2</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td>
+				<input size="2" name="Digital_input_2" value="Close">
+			</td>
+			<td>Alarm if</td>
+			<td>
+				<select name="option">
+					<option value="Open">Open</option>
+					<option value="Close">Close</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Temperature_1</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td>
+				<input size="1" name="Temperature_1" value="80">
+			</td>
+			<td>Alarm If</td>
+			<td>
+				<select name="option">
+					<option value="More than">More than</option>
+					<option value="Less than">Less than</option>
+				</select>
+			</td>
+			<td>
+				<input size="1" name="Temperature_1" value="35">
+			</td>
+			<td>&nbsp;</td>
+			<td>Alarm Description</td>
+			<td>
+				<input size="20" name="Temperature_1" value="High Temperature">
+			</td>
+		</tr>
+		<tr>
+			<td>Temperarture_2</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td>
+				<input size="1" name="Temperature_2" value="35">
+			</td>
+			<td>Alarm If</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Betwen</option>
+					<option value="Disable">Out Off</option>
+				</select>
+			</td>
+			<td>
+				<input size="1" name="Temperarture_2" value="70">
+			</td>
+			<td>
+				<input size="1" name="Temperarture_2" value="80">
+			</td>
+			<td>Alarm Description</td>
+			<td>
+				<input size="20" name="Temperarture_2" value="Temperature out of tolarance">
+			</td>
+		</tr>
+		<tr>
+			<td>Humidity</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td>
+				<input size="1" name="Humidity" value="70">
+			</td>
+			<td>Alarm If</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Betwen</option>
+					<option value="Disable">Out Off</option>
+				</select>
+			</td>
+			<td><input size="1" name="Humidity" value="70"></td>
+			<td><input size="1" name="Humidity" value="80"></td>
+			<td>Alarm Description</td>
+			<td><input size="20" name="alarm_description" value="Humidiy out of tolarance"></td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td colspan=>
+				<center>
+					<input type="submit" name="submit" value="Save">
+					<input type="submit" name="submit" value="Cancel">
+					<input type="submit" name="submit" value="Add New">
+					<input type="submit" name="submit" value="Delete Node">
+				</center>
+			</td>
+		</tr>
+	</table>
+	
+	<!-- *** Page 7 End ***** -->
+	
+	</div>
+	</div>
+	
+	<!-- *** Page 8 Start ***** -->
+	
+	<div class="Page">
+	<div class="Pad">
+	
+	<table>
+		<tr>
+			<td>List CC1120</td>
+			<td>
+				<select>
+					<option value= "1234">1234, CC1120_room1, IO, Normal</option>
+					<option value= "1235">1235, CC1120_room2, IO, Normal</option>
+					<option value= "1233">1233, CC1120_room3, Sensor, Normal</option>
+					<option value= "1231">1231, CC1120_room4, IO, Normal</option>
+					<option value= "1236">1236, CC1120_room5, KWH, Normal</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>CC1120 ID</td>
+			<td><input size="1" value="1234"/></td>
+			<td>CC1120 Label</td>
+			<td><input size="15" value="CC1120_room1"/></td>
+		</tr>
+		<tr>
+			<td>Device Type</td>
+			<td><input value="CC1120_IO_442"/></td>
+			<td>Device Status</td>
+			<td>
+				<select name="option">
+					<option value="Normal">Normal</option>
+					<option value="Disconnected">Disconnected</option>
+					<option value="New">New</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>Remote CC1120 RSSI</td>
+			<td><input size="1" value="-80"/></td>
+			<td>dbm</td>
+			<td>&nbsp;</td>
+			<td>Send parameter every</td>
+			<td><input size="1" value="xxx"/></td>
+			<td>second</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>Digital Input_1</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td><input size="1" value="Close"/></td>
+			<td>Alarm if</td>
+			<td>
+				<select name="option">
+					<option value="Open">Open</option>
+					<option value="Close">Close</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Digital Input_2</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td><input size="2" value="Close"/></td>
+			<td>Alarm if</td>
+			<td>
+				<select name="option">
+					<option value="Open">Open</option>
+					<option value="Close">Close</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Temperature_1</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			<td><input size="1" value="80"/></td>
+			<td>Alarm If</td>
+			<td>
+				<select name="option">
+					<option value="More than">More than</option>
+					<option value="Less than">Less than</option>
+				</select>
+			</td>
+			<td><input size="1" value="35"/></td>
+			<td>&nbsp;</td>
+			<td>Alarm Description</td>
+			<td><input size="20" value="High temperature"/></td>
+		</tr>
+		<tr>
+			<td>Temperarture_2</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td>&nbsp;</td>
+			<td>Alarm If</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Betwen</option>
+					<option value="Disable">Out Off</option>
+				</select>
+			</td>
+			<td><input size="1" value="70"/></td>
+			<td><input size="1" value="80"/></td>
+			<td>Alarm Description</td>
+			<td><input size="20" value="Temperature out of tolarance"/></td>
+		</tr>
+		<tr>
+			<td>Temperature_3</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Enable</option>
+					<option value="Disable">Disable</option>
+				</select>
+			</td>
+			<td>&nbsp;</td>
+			<td>Alarm If</td>
+			<td>
+				<select name="option">
+					<option value="Enable">Betwen</option>
+					<option value="Disable">Out Off</option>
+				</select>
+			</td>
+			<td><input size="1" value="70"/></td>
+			<td><input size="1" value="80"/></td>
+			<td>Alarm Description</td>
+			<td><input value="Humidiy out of tolarance"/></td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td colspan=>
+				<center>
+					<input type="submit" name="submit" value="Save">
+					<input type="submit" name="submit" value="Cancel">
+					<input type="submit" name="submit" value="Add New">
+					<input type="submit" name="submit" value="Delete Node">
+				</center>
+			</td>
+		</tr>
+	</table>
+	
+	<!-- *** Page 8 End ***** -->
+	
+	</div>
+	</div>
+	
+	<!-- *** Page 9 Start ***** -->
+	
+	<div class="Page">
+	<div class="Pad">
+	
+	<table>
+		<tr>
+			<td>List CC1120</td>
+			<td>
+				<select name="List_CC1120">
+					<option value="1234, CC1120_room1, IO, Normal">1234, CC1120_room1, IO, Normal</option>
+					<option value="1235, CC1120_room2, IO, Normal">1235, CC1120_room2, IO, Normal</option>
+					<option value="1233, CC1120_room3, Sensor, Normal">1233, CC1120_room3, Sensor, Normal</option>
+					<option value="1231, CC1120_room4, IO, Normal">1231, CC1120_room4, IO, Normal</option>
+					<option value="1234, CC1120_room5, KWH, Normal">1234, CC1120_room5, KWH, Normal</option>
+				</select>
+			</td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>CC1120 ID</td>
+			<td>
+				<input size="1" name="cc1120_id" value="1236">
+			</td>
+			<td>&nbsp;</td>
+			<td>CC1120 Label</td>
+			<td>
+				<input size="15" name="CC1120_basement" value="CC1120_basement">
+			</td>
+		</tr>
+		<tr>
+			<td>Device Type</td>
+			<td>
+				<input size="15" name="device_tipe" value="CC1120_IO_442">
+			</td>
+			<td>&nbsp;</td>
+			<td>Device Status</td>
+			<td>
+				<select name="device_status">
+					<option value="Disable">Normal</option>
+					<option value="Disable">Disconnected</option>
+					<option value="Disable">New</option>
+				</select>
+			</td>
+		</tr>
+		</table>
+		<table>
+		<tr>
+			<td>Remote CC1120 RSSI</td>
+			<td>
+				<input size="1" rows="1" name="rcc1120rrsi" value="80">
+			</td>
+			<td>dbm</td>
+			<td>&nbsp;</td>
+			<td>&nbsp;</td>
+			<td>Send parameter every</td>
+			<td>
+				<input size="1" name="send_parameter_every" value="xxx">
+			</td>
+			<td>second</td>
+		</tr>
+		</table>
+		<table>
+		<tr>
+			<td>I_R1</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+			<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_R2</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_R3</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+			<td>
+		</tr>
+		<tr>
+			<td>I_R4</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_R5</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+			<td>
+		</tr>
+		<br />
+			<td>I_R6</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_S1</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+			<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_S2</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_S3</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_S4</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_S5</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_S6</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_T1</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_T2</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_T3</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+			<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_T4</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+			<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_T5</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+			<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td>I_T6</td>
+			<td>
+				<select name="option">
+				<option value="More">More than</option>
+				<option value="Less">Less than</option></select>
+			</td>
+			<td>
+				<input size="1" value="40">
+			</td>
+			<td>Amp</td>
+			<td>
+				<select name="option">
+				<option value="OR">OR</option>
+				<option value="And">And</option></select>
+			</td>
+			<td>
+				<select name="option">
+				<option value="Less">Less than</option>
+				<option value="More">More than</option></select>
+			</td>
+			<td>
+				<input size="1" value="1">
+			</td>
+			<td>Amp</td>
+		</tr>
+		<tr>
+			<td colspan="8">
+				<center>
+					<input type="submit" name="submit" value="Save">
+					<input type="submit" name="submit" value="Cancel">
+					<input type="submit" name="submit" value="Add New">
+					<input type="submit" name="submit" value="Delete Node">
+				</center>
+			</td>
+		</tr>
+	</table>
+	
+	</div>
+	</div>	
+	
+
+</div>
+
+</div>
+
+</form>
+
+<?php
+$servername = "localhost";
+$username = "root";
+$password = "satunol10";
+$dbname = "testdb";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+// Check if input is empty
+if ($Device_IP_Temp == "")
+	{
+	$Device_IP_Temp=$Device_IP;
+	}
+if ($Gateway_Temp == "")
+        {
+        $Gateway_Temp=$Gateway;
+        }
+if ($Server_IP_Temp == "")
+        {
+        $Server_IP_Temp=$Server_IP;
+        }
+if ($Storage_Temp == "")
+        {
+        $Storage_Temp=$Storage;
+        }
+if ($Customer_Name_Temp == "")
+        {
+        $Customer_Name_Temp=$Customer_Name;
+        }
+if ($Device_ID_Temp == "")
+        {
+        $Device_ID_Temp=$Device_ID;
+        }
+if ($Username_Temp == "")
+        {
+        $Username_Temp=$Username;
+        }
+if ($Email_Temp == "")
+        {
+        $Email_Temp=$Email;
+        }
+if ($Cell_Number_Temp == "")
+        {
+        $Cell_Number_Temp=$Cell_Number;
+        }
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+$sql = "UPDATE System SET Data='$Device_IP_Temp' WHERE Type_Data='Device IP'";
+if ($conn->query($sql) === TRUE) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+//close connection
+$conn->close();
+
+//Create Connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+$sql = "UPDATE System SET Data='$Gateway_Temp' WHERE Type_Data='Gateway'";
+if ($conn->query($sql) === TRUE) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+
+$sql = "UPDATE System SET Data='$Server_IP_Temp' WHERE Type_Data='Server IP'";
+if ($conn->query($sql) === TRUE) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+
+$sql = "UPDATE System SET Data='$Storage_Temp' WHERE Type_Data='Storage'";
+if ($conn->query($sql) === TRUE) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+
+$sql = "UPDATE System SET Data='$Customer_ID_Temp' WHERE Type_Data='Customer ID'";
+if ($conn->query($sql) === TRUE) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+
+$sql = "UPDATE System SET Data='$Device_ID_Temp' WHERE Type_Data='Device ID'";
+if ($conn->query($sql) === TRUE) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+
+$sql = "UPDATE System SET Data='$Username_Temp' WHERE Type_Data='Username'";
+if ($conn->query($sql) === TRUE) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+
+$sql = "UPDATE System SET Data='$Email_Temp' WHERE Type_Data='Email'";
+if ($conn->query($sql) === TRUE) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+
+$sql = "UPDATE System SET Data='$Cell_Number_Temp' WHERE Type_Data='Cell Number'";
+if ($conn->query($sql) === TRUE) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+
+$sql = "UPDATE System SET Data='$Customer_Name_Temp' WHERE Type_Data='Customer Name'";
+if ($conn->query($sql) === TRUE) {
+    echo "Record updated successfully";
+} else {
+    echo "Error updating record: " . $conn->error;
+}
+
+
+?>
+
+<scrIPt type="text/javascript">
+
+tabview_initialize('TabView');
+
+</script>
+
+</body>
+</html>
